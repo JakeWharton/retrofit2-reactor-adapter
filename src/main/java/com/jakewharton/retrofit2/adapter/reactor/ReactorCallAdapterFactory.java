@@ -37,7 +37,7 @@ import retrofit2.Retrofit;
  *   Flux&lt;User&gt; getUser()
  * }
  * </code></pre>
- * There are three configurations supported for the {@code Observable} or {@code Single} type
+ * There are three configurations supported for the {@code Flux} or {@code Mono} type
  * parameter:
  * <ul>
  * <li>Direct body (e.g., {@code Flux<User>}) calls {@code onNext} with the deserialized body for
