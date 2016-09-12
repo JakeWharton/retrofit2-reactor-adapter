@@ -30,7 +30,7 @@ final class ResultFlux<T> extends Flux<Result<T>> {
   }
 
   @Override public void subscribe(Subscriber<? super Result<T>> subscriber) {
-    upstream.subscribe(new ResultSubscriber<T>(subscriber));
+    upstream.subscribe(new ResultSubscriber<>(subscriber));
   }
 
   private static class ResultSubscriber<R> implements Subscriber<Response<R>> {

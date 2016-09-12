@@ -32,6 +32,7 @@ public final class HttpExceptionTest {
 
   @Test public void nullResponseThrows() {
     try {
+      //noinspection ThrowableInstanceNeverThrown
       new HttpException(null);
       fail();
     } catch (NullPointerException e) {
