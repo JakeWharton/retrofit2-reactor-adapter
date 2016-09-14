@@ -11,7 +11,7 @@
 
   <groupId>com.jakewharton.retrofit</groupId>
   <artifactId>retrofit2-reactor-adapter</artifactId>
-  <version>1.0.0</version>
+  <version>1.0.1-SNAPSHOT</version>
 
   <name>Retrofit 2 Project Reactor Adapter</name>
   <description>A Project Reactor 3.x CallAdapter.Factory implementation for Retrofit 2.</description>
