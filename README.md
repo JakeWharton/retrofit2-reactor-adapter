@@ -25,18 +25,16 @@ Available types:
 Download
 --------
 
-Note: No stable release is available at this time.
-
 Gradle:
 ```groovy
-compile 'com.jakewharton.retrofit:retrofit2-reactor-adapter:1.0.0-SNAPSHOT'
+compile 'com.jakewharton.retrofit:retrofit2-reactor-adapter:1.0.0'
 ```
 or Maven:
 ```xml
 <dependency>
   <groupId>com.jakewharton.retrofit</groupId>
   <artifactId>retrofit2-reactor-adapter</artifactId>
-  <version>1.0.0-SNAPSHOT</version>
+  <version>1.0.0</version>
 </dependency>
 ```
 
