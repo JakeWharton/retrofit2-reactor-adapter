@@ -18,6 +18,7 @@ package com.jakewharton.retrofit2.adapter.reactor;
 import org.reactivestreams.Publisher;
 import org.reactivestreams.Subscriber;
 import org.reactivestreams.Subscription;
+import reactor.core.CoreSubscriber;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Operators;
 import retrofit2.Response;
@@ -29,8 +30,9 @@ final class BodyFlux<T> extends Flux<T> {
     this.upstream = upstream;
   }
 
-  @Override public void subscribe(Subscriber<? super T> subscriber) {
-    upstream.subscribe(new BodySubscriber<>(subscriber));
+  @Override
+  public void subscribe(CoreSubscriber<? super T> coreSubscriber) {
+    upstream.subscribe(new BodySubscriber<>(coreSubscriber));
   }
 
   private static class BodySubscriber<R> implements Subscriber<Response<R>> {
