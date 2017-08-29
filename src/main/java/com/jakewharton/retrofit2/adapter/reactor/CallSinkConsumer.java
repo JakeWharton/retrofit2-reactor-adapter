@@ -15,11 +15,12 @@
  */
 package com.jakewharton.retrofit2.adapter.reactor;
 
-import java.io.IOException;
-import java.util.function.Consumer;
 import reactor.core.publisher.FluxSink;
 import retrofit2.Call;
 import retrofit2.Response;
+
+import java.io.IOException;
+import java.util.function.Consumer;
 
 final class CallSinkConsumer<T> implements Consumer<FluxSink<Response<T>>> {
   private final Call<T> originalCall;
@@ -32,7 +33,7 @@ final class CallSinkConsumer<T> implements Consumer<FluxSink<Response<T>>> {
     // Since Call is a one-shot type, clone it for each new subscriber.
     Call<T> call = originalCall.clone();
 
-    sink.setCancellation(call::cancel);
+    sink.onDispose(call::cancel);
 
     Response<T> response;
     try {
