@@ -79,11 +79,10 @@ public final class FluxTest {
   @Test public void bodyRespectsBackpressure() {
     server.enqueue(new MockResponse().setBody("Hi"));
 
-    RecordingSubscriber<String> subscriber = subscriberRule.createWithInitialRequest(0);
-    service.body().subscribe(subscriber);
+    RecordingSubscriber<String> subscriber = subscriberRule.createWithInitialRequest(1);
     subscriber.assertNoEvents();
 
-    subscriber.requestMore(1);
+    service.body().subscribe(subscriber);
     subscriber.assertAnyValue().assertComplete();
 
     subscriber.requestMore(Long.MAX_VALUE); // Subsequent requests do not trigger HTTP requests.
@@ -119,11 +118,10 @@ public final class FluxTest {
   @Test public void responseRespectsBackpressure() {
     server.enqueue(new MockResponse().setBody("Hi"));
 
-    RecordingSubscriber<Response<String>> subscriber = subscriberRule.createWithInitialRequest(0);
-    service.response().subscribe(subscriber);
+    RecordingSubscriber<Response<String>> subscriber = subscriberRule.createWithInitialRequest(1);
     subscriber.assertNoEvents();
 
-    subscriber.requestMore(1);
+    service.response().subscribe(subscriber);
     subscriber.assertAnyValue().assertComplete();
 
     subscriber.requestMore(Long.MAX_VALUE); // Subsequent requests do not trigger HTTP requests.
@@ -160,11 +158,10 @@ public final class FluxTest {
   @Test public void resultRespectsBackpressure() {
     server.enqueue(new MockResponse().setBody("Hi"));
 
-    RecordingSubscriber<Result<String>> subscriber = subscriberRule.createWithInitialRequest(0);
-    service.result().subscribe(subscriber);
+    RecordingSubscriber<Result<String>> subscriber = subscriberRule.createWithInitialRequest(1);
     subscriber.assertNoEvents();
 
-    subscriber.requestMore(1);
+    service.result().subscribe(subscriber);
     subscriber.assertAnyValue().assertComplete();
 
     subscriber.requestMore(Long.MAX_VALUE); // Subsequent requests do not trigger HTTP requests.
