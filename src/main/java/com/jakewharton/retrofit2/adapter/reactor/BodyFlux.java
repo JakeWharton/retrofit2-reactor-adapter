@@ -18,8 +18,11 @@ package com.jakewharton.retrofit2.adapter.reactor;
 import org.reactivestreams.Publisher;
 import org.reactivestreams.Subscriber;
 import org.reactivestreams.Subscription;
+
+import reactor.core.CoreSubscriber;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Operators;
+import reactor.util.context.Context;
 import retrofit2.Response;
 
 final class BodyFlux<T> extends Flux<T> {
@@ -29,7 +32,7 @@ final class BodyFlux<T> extends Flux<T> {
     this.upstream = upstream;
   }
 
-  @Override public void subscribe(Subscriber<? super T> subscriber) {
+  @Override public void subscribe(CoreSubscriber<? super T> subscriber) {
     upstream.subscribe(new BodySubscriber<>(subscriber));
   }
 
@@ -55,7 +58,7 @@ final class BodyFlux<T> extends Flux<T> {
         try {
           subscriber.onError(t);
         } catch (Throwable inner) {
-          Operators.onErrorDropped(inner, t);
+          Operators.onErrorDropped(inner, Context.empty());
         }
       }
     }
@@ -68,7 +71,7 @@ final class BodyFlux<T> extends Flux<T> {
         Throwable broken = new AssertionError(
             "This should never happen! Report as a Retrofit bug with the full stacktrace.",
             throwable);
-        Operators.onErrorDropped(broken);
+        Operators.onErrorDropped(broken, Context.empty());
       }
     }
 

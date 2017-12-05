@@ -18,8 +18,11 @@ package com.jakewharton.retrofit2.adapter.reactor;
 import org.reactivestreams.Publisher;
 import org.reactivestreams.Subscriber;
 import org.reactivestreams.Subscription;
+
+import reactor.core.CoreSubscriber;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Operators;
+import reactor.util.context.Context;
 import retrofit2.Response;
 
 final class ResultFlux<T> extends Flux<Result<T>> {
@@ -29,7 +32,7 @@ final class ResultFlux<T> extends Flux<Result<T>> {
     this.upstream = upstream;
   }
 
-  @Override public void subscribe(Subscriber<? super Result<T>> subscriber) {
+  @Override public void subscribe(CoreSubscriber<? super Result<T>> subscriber) {
     upstream.subscribe(new ResultSubscriber<>(subscriber));
   }
 
@@ -55,7 +58,7 @@ final class ResultFlux<T> extends Flux<Result<T>> {
         try {
           subscriber.onError(t);
         } catch (Throwable inner) {
-          Operators.onErrorDropped(inner, t);
+          Operators.onErrorDropped(inner, Context.empty());
         }
         return;
       }

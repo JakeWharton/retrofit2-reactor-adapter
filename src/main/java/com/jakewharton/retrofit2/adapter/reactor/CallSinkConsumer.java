@@ -32,7 +32,7 @@ final class CallSinkConsumer<T> implements Consumer<FluxSink<Response<T>>> {
     // Since Call is a one-shot type, clone it for each new subscriber.
     Call<T> call = originalCall.clone();
 
-    sink.setCancellation(call::cancel);
+    sink.onDispose(call::cancel);
 
     Response<T> response;
     try {
