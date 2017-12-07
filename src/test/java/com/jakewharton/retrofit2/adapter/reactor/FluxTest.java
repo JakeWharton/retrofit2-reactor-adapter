@@ -76,20 +76,6 @@ public final class FluxTest {
     subscriber.assertError(IOException.class);
   }
 
-  @Test public void bodyRespectsBackpressure() {
-    server.enqueue(new MockResponse().setBody("Hi"));
-
-    RecordingSubscriber<String> subscriber = subscriberRule.createWithInitialRequest(0);
-    service.body().subscribe(subscriber);
-    subscriber.assertNoEvents();
-
-    subscriber.requestMore(1);
-    subscriber.assertAnyValue().assertComplete();
-
-    subscriber.requestMore(Long.MAX_VALUE); // Subsequent requests do not trigger HTTP requests.
-    assertThat(server.getRequestCount()).isEqualTo(1);
-  }
-
   @Test public void responseSuccess200() {
     server.enqueue(new MockResponse().setBody("Hi"));
 
@@ -114,20 +100,6 @@ public final class FluxTest {
     RecordingSubscriber<Response<String>> subscriber = subscriberRule.create();
     service.response().subscribe(subscriber);
     subscriber.assertError(IOException.class);
-  }
-
-  @Test public void responseRespectsBackpressure() {
-    server.enqueue(new MockResponse().setBody("Hi"));
-
-    RecordingSubscriber<Response<String>> subscriber = subscriberRule.createWithInitialRequest(0);
-    service.response().subscribe(subscriber);
-    subscriber.assertNoEvents();
-
-    subscriber.requestMore(1);
-    subscriber.assertAnyValue().assertComplete();
-
-    subscriber.requestMore(Long.MAX_VALUE); // Subsequent requests do not trigger HTTP requests.
-    assertThat(server.getRequestCount()).isEqualTo(1);
   }
 
   @Test public void resultSuccess200() {
@@ -155,19 +127,5 @@ public final class FluxTest {
     service.result().subscribe(subscriber);
     assertThat(subscriber.takeValue().error()).isInstanceOf(IOException.class);
     subscriber.assertComplete();
-  }
-
-  @Test public void resultRespectsBackpressure() {
-    server.enqueue(new MockResponse().setBody("Hi"));
-
-    RecordingSubscriber<Result<String>> subscriber = subscriberRule.createWithInitialRequest(0);
-    service.result().subscribe(subscriber);
-    subscriber.assertNoEvents();
-
-    subscriber.requestMore(1);
-    subscriber.assertAnyValue().assertComplete();
-
-    subscriber.requestMore(Long.MAX_VALUE); // Subsequent requests do not trigger HTTP requests.
-    assertThat(server.getRequestCount()).isEqualTo(1);
   }
 }
