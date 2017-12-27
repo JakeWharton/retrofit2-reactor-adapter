@@ -23,12 +23,13 @@ import org.junit.Rule;
 import org.junit.Test;
 import org.junit.rules.TestRule;
 import reactor.core.publisher.Mono;
+import retrofit2.HttpException;
 import retrofit2.Response;
 import retrofit2.Retrofit;
 import retrofit2.http.GET;
 
+import static com.google.common.truth.Truth.assertThat;
 import static okhttp3.mockwebserver.SocketPolicy.DISCONNECT_AFTER_REQUEST;
-import static org.assertj.core.api.StrictAssertions.assertThat;
 
 public final class MonoTest {
   @Rule public final MockWebServer server = new MockWebServer();
@@ -85,7 +86,7 @@ public final class MonoTest {
     subscriber.assertComplete();
   }
 
-  @Test public void responseSuccess404() throws IOException {
+  @Test public void responseSuccess404() {
     server.enqueue(new MockResponse().setResponseCode(404));
 
     RecordingSubscriber<Response<String>> subscriber = subscriberRule.create();
@@ -111,7 +112,7 @@ public final class MonoTest {
     subscriber.assertComplete();
   }
 
-  @Test public void resultSuccess404() throws IOException {
+  @Test public void resultSuccess404() {
     server.enqueue(new MockResponse().setResponseCode(404));
 
     RecordingSubscriber<Result<String>> subscriber = subscriberRule.create();

@@ -41,8 +41,8 @@ import retrofit2.Retrofit;
  * parameter:
  * <ul>
  * <li>Direct body (e.g., {@code Flux<User>}) calls {@code onNext} with the deserialized body for
- * 2XX responses and calls {@code onError} with {@link HttpException} for non-2XX responses and
- * {@link IOException} for network errors.</li>
+ * 2XX responses and calls {@code onError} with {@link retrofit2.HttpException} for non-2XX
+ * responses and {@link IOException} for network errors.</li>
  * <li>Response wrapped body (e.g., {@code Flux<Response<User>>}) calls {@code onNext} with a
  * {@link Response} object for all HTTP responses and calls {@code onError} with {@link IOException}
  * for network errors</li>
@@ -75,7 +75,7 @@ public final class ReactorCallAdapterFactory extends CallAdapter.Factory {
   }
 
   @Override
-  public CallAdapter<?> get(Type returnType, Annotation[] annotations, Retrofit retrofit) {
+  public CallAdapter<?, ?> get(Type returnType, Annotation[] annotations, Retrofit retrofit) {
     Class<?> rawType = getRawType(returnType);
     boolean isMono = rawType == Mono.class;
     if (rawType != Flux.class && !isMono) {

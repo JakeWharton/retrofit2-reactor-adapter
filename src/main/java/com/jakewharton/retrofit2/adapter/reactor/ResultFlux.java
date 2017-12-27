@@ -52,7 +52,7 @@ final class ResultFlux<T> extends Flux<Result<T>> {
 
     @Override public void onError(Throwable throwable) {
       try {
-        subscriber.onNext(Result.<R>error(throwable));
+        subscriber.onNext(Result.error(throwable));
       } catch (Throwable t) {
         try {
           subscriber.onError(t);
