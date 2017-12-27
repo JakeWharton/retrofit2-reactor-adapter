@@ -24,7 +24,7 @@ import retrofit2.Response;
 
 import static reactor.core.publisher.FluxSink.OverflowStrategy.LATEST;
 
-final class ReactorCallAdapter implements CallAdapter<Object> {
+final class ReactorCallAdapter<R> implements CallAdapter<R, Object> {
   private final Type responseType;
   private final Scheduler scheduler;
   private final boolean isResult;
@@ -44,7 +44,7 @@ final class ReactorCallAdapter implements CallAdapter<Object> {
     return responseType;
   }
 
-  @Override public <R> Object adapt(Call<R> call) {
+  @Override public Object adapt(Call<R> call) {
     Flux<Response<R>> responseFlux = Flux.create(new CallSinkConsumer<>(call), LATEST);
 
     Flux<?> flux;

@@ -19,7 +19,7 @@ import java.io.IOException;
 import org.junit.Test;
 import retrofit2.Response;
 
-import static org.assertj.core.api.Assertions.assertThat;
+import static com.google.common.truth.Truth.assertThat;
 import static org.junit.Assert.fail;
 
 public final class ResultTest {
@@ -36,7 +36,7 @@ public final class ResultTest {
       Result.response(null);
       fail();
     } catch (NullPointerException e) {
-      assertThat(e).hasMessage("response == null");
+      assertThat(e).hasMessageThat().isEqualTo("response == null");
     }
   }
 
@@ -53,7 +53,7 @@ public final class ResultTest {
       Result.error(null);
       fail();
     } catch (NullPointerException e) {
-      assertThat(e).hasMessage("error == null");
+      assertThat(e).hasMessageThat().isEqualTo("error == null");
     }
   }
 }

@@ -26,7 +26,7 @@ import org.reactivestreams.Subscriber;
 import org.reactivestreams.Subscription;
 import reactor.core.publisher.Signal;
 
-import static org.assertj.core.api.Assertions.assertThat;
+import static com.google.common.truth.Truth.assertThat;
 
 /** A test {@link Subscriber} and JUnit rule which guarantees all events are asserted. */
 final class RecordingSubscriber<T> implements Subscriber<T> {
@@ -67,7 +67,7 @@ final class RecordingSubscriber<T> implements Subscriber<T> {
   public T takeValue() {
     Signal<T> signal = takeSignal();
     assertThat(signal.isOnNext())
-        .overridingErrorMessage("Expected onNext event but was %s", signal)
+        .named("Expected onNext event but was %s", signal)
         .isTrue();
     return signal.get();
   }
@@ -75,7 +75,7 @@ final class RecordingSubscriber<T> implements Subscriber<T> {
   public Throwable takeError() {
     Signal<T> signal = takeSignal();
     assertThat(signal.isOnError())
-        .overridingErrorMessage("Expected onError event but was %s", signal)
+        .named("Expected onError event but was %s", signal)
         .isTrue();
     return signal.getThrowable();
   }
@@ -93,7 +93,7 @@ final class RecordingSubscriber<T> implements Subscriber<T> {
   public void assertComplete() {
     Signal<T> signal = takeSignal();
     assertThat(signal.isOnComplete())
-        .overridingErrorMessage("Expected onCompleted event but was %s", signal)
+        .named("Expected onCompleted event but was %s", signal)
         .isTrue();
     assertNoEvents();
   }
@@ -116,7 +116,7 @@ final class RecordingSubscriber<T> implements Subscriber<T> {
   }
 
   public void assertNoEvents() {
-    assertThat(events).as("Unconsumed events found!").isEmpty();
+    assertThat(events).named("Unconsumed events found!").isEmpty();
   }
 
   public void requestMore(long amount) {

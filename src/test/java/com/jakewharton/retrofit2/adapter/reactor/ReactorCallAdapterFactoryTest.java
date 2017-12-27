@@ -27,7 +27,7 @@ import retrofit2.CallAdapter;
 import retrofit2.Response;
 import retrofit2.Retrofit;
 
-import static org.assertj.core.api.StrictAssertions.assertThat;
+import static com.google.common.truth.Truth.assertThat;
 import static org.junit.Assert.fail;
 
 public final class ReactorCallAdapterFactoryTest {
@@ -49,12 +49,12 @@ public final class ReactorCallAdapterFactoryTest {
       ReactorCallAdapterFactory.createWithScheduler(null);
       fail();
     } catch (NullPointerException e) {
-      assertThat(e).hasMessage("scheduler == null");
+      assertThat(e).hasMessageThat().isEqualTo("scheduler == null");
     }
   }
 
   @Test public void nonReactorTypeReturnsNull() {
-    CallAdapter<?> adapter = factory.get(String.class, NO_ANNOTATIONS, retrofit);
+    CallAdapter<?, ?> adapter = factory.get(String.class, NO_ANNOTATIONS, retrofit);
     assertThat(adapter).isNull();
   }
 

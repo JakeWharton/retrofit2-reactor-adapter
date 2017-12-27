@@ -22,6 +22,7 @@ import reactor.core.CoreSubscriber;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Operators;
 import reactor.util.context.Context;
+import retrofit2.HttpException;
 import retrofit2.Response;
 
 final class BodyFlux<T> extends Flux<T> {
