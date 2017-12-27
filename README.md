@@ -27,14 +27,14 @@ Download
 
 Gradle:
 ```groovy
-compile 'com.jakewharton.retrofit:retrofit2-reactor-adapter:1.0.0'
+compile 'com.jakewharton.retrofit:retrofit2-reactor-adapter:2.0.0'
 ```
 or Maven:
 ```xml
 <dependency>
   <groupId>com.jakewharton.retrofit</groupId>
   <artifactId>retrofit2-reactor-adapter</artifactId>
-  <version>1.0.0</version>
+  <version>2.0.0</version>
 </dependency>
 ```
 
