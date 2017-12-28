@@ -1,6 +1,12 @@
 Change Log
 ==========
 
+Version 2.1.0 *(2017-12-28)*
+----------------------------
+
+ * New: `createAsync()` factory function produces `Flux` and `Mono` instances which use OkHttp's native async threading to execute requests. Calling `subscribeOn` on the returned instances will have no effect.
+
+
 Version 2.0.0 *(2017-12-27)*
 ----------------------------
 
