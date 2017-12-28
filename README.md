@@ -1,7 +1,7 @@
 Retrofit 2 Project Reactor Adapter
 ==================================
 
-An Project Reactor `CallAdapter.Factory` implementation for Retrofit 2.
+A Project Reactor `CallAdapter.Factory` implementation for Retrofit 2.
 
 
 
