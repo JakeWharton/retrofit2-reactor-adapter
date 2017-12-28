@@ -16,7 +16,9 @@
 package com.jakewharton.retrofit2.adapter.reactor;
 
 import java.lang.reflect.Type;
+import java.util.function.Consumer;
 import reactor.core.publisher.Flux;
+import reactor.core.publisher.FluxSink;
 import reactor.core.scheduler.Scheduler;
 import retrofit2.Call;
 import retrofit2.CallAdapter;
@@ -27,14 +29,16 @@ import static reactor.core.publisher.FluxSink.OverflowStrategy.LATEST;
 final class ReactorCallAdapter<R> implements CallAdapter<R, Object> {
   private final Type responseType;
   private final Scheduler scheduler;
+  private final boolean isAsync;
   private final boolean isResult;
   private final boolean isBody;
   private final boolean isMono;
 
-  ReactorCallAdapter(Type responseType, Scheduler scheduler, boolean isResult, boolean isBody,
-      boolean isMono) {
+  ReactorCallAdapter(Type responseType, Scheduler scheduler, boolean isAsync, boolean isResult,
+      boolean isBody, boolean isMono) {
     this.responseType = responseType;
     this.scheduler = scheduler;
+    this.isAsync = isAsync;
     this.isResult = isResult;
     this.isBody = isBody;
     this.isMono = isMono;
@@ -45,7 +49,10 @@ final class ReactorCallAdapter<R> implements CallAdapter<R, Object> {
   }
 
   @Override public Object adapt(Call<R> call) {
-    Flux<Response<R>> responseFlux = Flux.create(new CallSinkConsumer<>(call), LATEST);
+    Consumer<FluxSink<Response<R>>> consumer = isAsync
+        ? new EnqueueSinkConsumer<>(call)
+        : new ExecuteSinkConsumer<>(call);
+    Flux<Response<R>> responseFlux = Flux.create(consumer, LATEST);
 
     Flux<?> flux;
     if (isResult) {

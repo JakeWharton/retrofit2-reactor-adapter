@@ -15,16 +15,17 @@
  */
 package com.jakewharton.retrofit2.adapter.reactor;
 
-import java.io.IOException;
 import java.util.function.Consumer;
+import reactor.core.Disposable;
 import reactor.core.publisher.FluxSink;
 import retrofit2.Call;
+import retrofit2.Callback;
 import retrofit2.Response;
 
-final class CallSinkConsumer<T> implements Consumer<FluxSink<Response<T>>> {
+final class EnqueueSinkConsumer<T> implements Consumer<FluxSink<Response<T>>> {
   private final Call<T> originalCall;
 
-  CallSinkConsumer(Call<T> originalCall) {
+  EnqueueSinkConsumer(Call<T> originalCall) {
     this.originalCall = originalCall;
   }
 
@@ -32,16 +33,35 @@ final class CallSinkConsumer<T> implements Consumer<FluxSink<Response<T>>> {
     // Since Call is a one-shot type, clone it for each new subscriber.
     Call<T> call = originalCall.clone();
 
-    sink.onDispose(call::cancel);
+    DisposableCallback<T> callback = new DisposableCallback<>(call, sink);
+    sink.onDispose(callback);
+    call.enqueue(callback);
+  }
 
-    Response<T> response;
-    try {
-      response = call.execute();
-    } catch (IOException e) {
-      sink.error(e);
-      return;
+  static final class DisposableCallback<T> implements Callback<T>, Disposable {
+    private final Call<T> call;
+    private final FluxSink<Response<T>> sink;
+
+    DisposableCallback(Call<T> call, FluxSink<Response<T>> sink) {
+      this.call = call;
+      this.sink = sink;
     }
-    sink.next(response);
-    sink.complete();
+
+    @Override public void onResponse(Call<T> call, Response<T> response) {
+      sink.next(response);
+      sink.complete();
+    }
+
+    @Override public void onFailure(Call<T> call, Throwable t) {
+      sink.error(t);
+    }
+
+    @Override public void dispose() {
+      call.cancel();
+    }
+
+    @Override public boolean isDisposed() {
+      return call.isCanceled();
+    }
   }
 }

@@ -56,7 +56,15 @@ public final class ReactorCallAdapterFactory extends CallAdapter.Factory {
    * by default.
    */
   public static ReactorCallAdapterFactory create() {
-    return new ReactorCallAdapterFactory(null);
+    return new ReactorCallAdapterFactory(null, false);
+  }
+
+  /**
+   * Returns an instance which creates asynchronous observables. Applying
+   * {@link Flux#subscribeOn} has no effect on stream types created by this factory.
+   */
+  public static ReactorCallAdapterFactory createAsync() {
+    return new ReactorCallAdapterFactory(null, true);
   }
 
   /**
@@ -65,13 +73,15 @@ public final class ReactorCallAdapterFactory extends CallAdapter.Factory {
    */
   public static ReactorCallAdapterFactory createWithScheduler(Scheduler scheduler) {
     if (scheduler == null) throw new NullPointerException("scheduler == null");
-    return new ReactorCallAdapterFactory(scheduler);
+    return new ReactorCallAdapterFactory(scheduler, false);
   }
 
   private final Scheduler scheduler;
+  private final boolean isAsync;
 
-  private ReactorCallAdapterFactory(Scheduler scheduler) {
+  private ReactorCallAdapterFactory(Scheduler scheduler, boolean isAsync) {
     this.scheduler = scheduler;
+    this.isAsync = isAsync;
   }
 
   @Override
@@ -111,6 +121,6 @@ public final class ReactorCallAdapterFactory extends CallAdapter.Factory {
       isBody = true;
     }
 
-    return new ReactorCallAdapter(responseType, scheduler, isResult, isBody, isMono);
+    return new ReactorCallAdapter(responseType, scheduler, isAsync, isResult, isBody, isMono);
   }
 }
