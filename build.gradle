@@ -9,12 +9,12 @@ repositories {
 }
 
 dependencies {
-  api 'com.squareup.retrofit2:retrofit:2.4.0'
-  api 'io.projectreactor:reactor-core:3.1.6.RELEASE'
+  api 'com.squareup.retrofit2:retrofit:2.5.0'
+  api 'io.projectreactor:reactor-core:3.2.3.RELEASE'
 
   testImplementation 'junit:junit:4.12'
   testImplementation 'com.squareup.okhttp3:mockwebserver:3.9.1'
   testImplementation 'com.google.guava:guava:23.6-jre'
   testImplementation 'com.google.truth:truth:0.37'
-  testImplementation 'io.projectreactor:reactor-test:3.1.2.RELEASE'
+  testImplementation 'io.projectreactor:reactor-test:3.2.3.RELEASE'
 }
