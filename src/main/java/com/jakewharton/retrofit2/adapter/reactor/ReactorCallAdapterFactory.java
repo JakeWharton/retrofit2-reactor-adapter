@@ -69,7 +69,7 @@ public final class ReactorCallAdapterFactory extends CallAdapter.Factory {
 
   /**
    * Returns an instance which creates synchronous observables that
-   * {@linkplain Flux#publishOn(Scheduler) publishes on} {@code scheduler} by default.
+   * {@linkplain Flux#subscribeOn(Scheduler) subscribes on} {@code scheduler} by default.
    */
   public static ReactorCallAdapterFactory createWithScheduler(Scheduler scheduler) {
     if (scheduler == null) throw new NullPointerException("scheduler == null");
